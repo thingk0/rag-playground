@@ -1,0 +1,23 @@
+[project]
+name = "rag-playground"
+version = "0.1.0"
+description = "RAG 파이프라인 실험 프로젝트 — 공공데이터 기반 검색 증강 생성"
+readme = "README.md"
+authors = [
+    { name = "Myoungsung Ko", email = "msko@bigxdata.io" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "chromadb>=1.5.1",
+    "httpx>=0.28.1",
+    "python-dotenv>=1.2.1",
+]
+
+[build-system]
+requires = ["uv_build>=0.8.3,<0.9.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.2",
+]
