@@ -1122,6 +1122,7 @@ source = { editable = "." }
 dependencies = [
     { name = "chromadb" },
     { name = "httpx" },
+    { name = "orjson" },
     { name = "python-dotenv" },
 ]
 
@@ -1134,6 +1135,7 @@ dev = [
 requires-dist = [
     { name = "chromadb", specifier = ">=1.5.1" },
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "orjson", specifier = ">=3.11.7" },
     { name = "python-dotenv", specifier = ">=1.2.1" },
 ]
 

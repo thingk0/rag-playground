@@ -208,3 +208,5 @@ __marimo__/
 
 .omc
 .claude
+
+data/raw/*
