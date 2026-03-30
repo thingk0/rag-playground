@@ -8,10 +8,11 @@ authors = [
 ]
 requires-python = ">=3.13"
 dependencies = [
-    "chromadb>=1.5.1",
+    "qdrant-client>=1.14.2",
     "httpx>=0.28.1",
     "orjson>=3.11.7",
     "python-dotenv>=1.2.1",
+    "openai>=1.82.0",
 ]
 
 [build-system]

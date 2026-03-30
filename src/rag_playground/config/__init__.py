@@ -1,0 +1,21 @@
+"""설정 모듈 export."""
+
+from rag_playground.config.settings import (
+    DATA_GO_KR_API_KEY,
+    DEFAULT_FAMILY_CARD_JSON_PATH,
+    OPENAI_API_KEY,
+    PROJECT_ROOT,
+    QDRANT_API_KEY,
+    QDRANT_URL,
+    RAW_DATA_DIR,
+)
+
+__all__ = [
+    "PROJECT_ROOT",
+    "RAW_DATA_DIR",
+    "DEFAULT_FAMILY_CARD_JSON_PATH",
+    "DATA_GO_KR_API_KEY",
+    "OPENAI_API_KEY",
+    "QDRANT_URL",
+    "QDRANT_API_KEY",
+]
