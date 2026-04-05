@@ -11,7 +11,7 @@ RAG 파이프라인을 단계적으로 완성해 나가는 퀘스트 보드.
 ## Quest 3: Naive RAG 파이프라인 구축 ✅
 > ChromaDB에 공공데이터 임베딩 저장 → 벡터 검색 → LLM 응답 생성. 가장 기본적인 RAG 파이프라인 완성.
 
-## Quest 4: Hybrid Search 적용 ⬜
+## Quest 4: Hybrid Search 적용 ✅
 > 키워드 검색(BM25 등) + 벡터 검색을 결합한 Hybrid Search 구현. Naive RAG 대비 성능 비교.
 
 ## Quest 5: Re-ranking 도입 ⬜
