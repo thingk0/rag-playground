@@ -3,6 +3,7 @@
 Usage:
     uv run python -m rag_playground.application.compare
     uv run python -m rag_playground.application.compare --query "부산진구 맛집"
+    uv run python -m rag_playground.application.compare --top-k 3
 """
 
 from __future__ import annotations
@@ -11,6 +12,7 @@ import argparse
 import logging
 import time
 
+from rag_playground.adapters.reranker.novita import rerank_hits
 from rag_playground.adapters.vectorstore.qdrant import (
     COLLECTION_NAME,
     HYBRID_COLLECTION_NAME,
@@ -32,12 +34,14 @@ MODE_SEARCH = {
     "naive": lambda q, c: search(q, collection_name=c),
     "bm25": lambda q, c: search_bm25(q, collection_name=c),
     "hybrid": lambda q, c: search_hybrid(q, collection_name=c),
+    "rerank": lambda q, c: rerank_hits(q, search_hybrid(q, collection_name=c, n_results=20), top_n=5),
 }
 
 MODE_COLLECTION = {
     "naive": COLLECTION_NAME,
     "bm25": HYBRID_COLLECTION_NAME,
     "hybrid": HYBRID_COLLECTION_NAME,
+    "rerank": HYBRID_COLLECTION_NAME,
 }
 
 
@@ -56,9 +60,14 @@ def print_result(mode: str, hits: list[dict], elapsed: float) -> None:
         return
     for idx, hit in enumerate(hits, start=1):
         meta = hit["metadata"]
-        score = hit.get("score", 1 - hit.get("distance", 0))
+        if mode == "rerank":
+            score = hit.get("relevance_score", 0)
+            label = "relevance"
+        else:
+            score = hit.get("score", 1 - hit.get("distance", 0))
+            label = "score"
         print(f"    {idx}. {meta.get('shop_name', '?')} ({meta.get('district', '?')}) "
-              f"— {meta.get('benefit', '')}  [{score:.4f}]")
+              f"— {meta.get('benefit', '')}  [{label}: {score:.4f}]")
     print()
 
 
@@ -85,7 +94,7 @@ def run_comparison(queries: list[str], n_results: int = 5) -> None:
         print(f"\n🔍 질의: \"{query}\"")
         print("-" * 40)
 
-        for mode in ("naive", "bm25", "hybrid"):
+        for mode in ("naive", "bm25", "hybrid", "rerank"):
             collection = MODE_COLLECTION[mode]
             start = time.time()
             hits = MODE_SEARCH[mode](query, collection)

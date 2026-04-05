@@ -3,6 +3,7 @@
 from rag_playground.config.settings import (
     DATA_GO_KR_API_KEY,
     DEFAULT_FAMILY_CARD_JSON_PATH,
+    NOVITA_API_KEY,
     OPENAI_API_KEY,
     PROJECT_ROOT,
     QDRANT_API_KEY,
@@ -18,4 +19,5 @@ __all__ = [
     "OPENAI_API_KEY",
     "QDRANT_URL",
     "QDRANT_API_KEY",
+    "NOVITA_API_KEY",
 ]

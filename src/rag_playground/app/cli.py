@@ -14,6 +14,7 @@ from rag_playground.application.answer import (
     answer_query,
     answer_query_bm25,
     answer_query_hybrid,
+    answer_query_rerank,
     load_collection,
     load_hybrid_collection,
 )
@@ -22,6 +23,7 @@ SEARCH_MODES = {
     "1": ("naive", "Naive RAG (벡터 검색)"),
     "2": ("bm25", "BM25 (키워드 검색)"),
     "3": ("hybrid", "Hybrid (벡터 + 키워드 RRF)"),
+    "4": ("rerank", "Hybrid + Re-rank (BGE-reranker-v2-m3)"),
 }
 
 
@@ -39,12 +41,12 @@ def select_mode() -> str:
         print(f"  {key}. {desc}")
 
     while True:
-        choice = input("\n선택 (1/2/3) [1]: ").strip()
+        choice = input("\n선택 (1/2/3/4) [1]: ").strip()
         if not choice:
             choice = "1"
         if choice in SEARCH_MODES:
             return SEARCH_MODES[choice][0]
-        print("⚠️  1, 2, 3 중 하나를 선택하세요.")
+        print("⚠️  1, 2, 3, 4 중 하나를 선택하세요.")
 
 
 def print_hits(hits: list[dict[str, Any]], mode: str) -> None:
@@ -56,8 +58,15 @@ def print_hits(hits: list[dict[str, Any]], mode: str) -> None:
     print(f"\n📚 검색된 문서 {len(hits)}건:")
     for index, hit in enumerate(hits, start=1):
         metadata = hit["metadata"]
-        score = hit.get("score", 1 - hit.get("distance", 0))
-        label = "score" if mode != "naive" else "거리"
+        if mode == "rerank":
+            score = hit.get("relevance_score", 0)
+            label = "relevance"
+        elif mode == "naive":
+            score = hit.get("distance", 0)
+            label = "거리"
+        else:
+            score = hit.get("score", 0)
+            label = "score"
         print(
             f"  {index}. {metadata.get('shop_name', '?')} ({metadata.get('district', '?')}) "
             f"— {metadata.get('benefit', '정보 없음')}  [{label}: {score:.4f}]"
@@ -72,7 +81,12 @@ def main() -> None:
     print("=" * 50)
 
     mode = select_mode()
-    mode_labels = {"naive": "Naive RAG", "bm25": "BM25", "hybrid": "Hybrid (Dense+BM25 RRF)"}
+    mode_labels = {
+        "naive": "Naive RAG",
+        "bm25": "BM25",
+        "hybrid": "Hybrid (Dense+BM25 RRF)",
+        "rerank": "Hybrid + Re-rank",
+    }
     print(f"\n✅ [{mode_labels[mode]}] 모드 선택됨")
 
     print("📦 벡터스토어 로딩 중...")
@@ -93,7 +107,12 @@ def main() -> None:
             print("   uv run python -m rag_playground.application.index --mode hybrid")
         return
 
-    answer_fn = {"naive": answer_query, "bm25": answer_query_bm25, "hybrid": answer_query_hybrid}[mode]
+    answer_fn = {
+        "naive": answer_query,
+        "bm25": answer_query_bm25,
+        "hybrid": answer_query_hybrid,
+        "rerank": answer_query_rerank,
+    }[mode]
 
     print("🔍 질문을 입력하세요 (종료: q)\n")
 

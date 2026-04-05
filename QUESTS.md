@@ -14,8 +14,8 @@ RAG 파이프라인을 단계적으로 완성해 나가는 퀘스트 보드.
 ## Quest 4: Hybrid Search 적용 ✅
 > 키워드 검색(BM25 등) + 벡터 검색을 결합한 Hybrid Search 구현. Naive RAG 대비 성능 비교.
 
-## Quest 5: Re-ranking 도입 ⬜
-> 검색 결과를 Re-ranker 모델로 재정렬하여 상위 문서 품질 개선. Cross-encoder 등 활용.
+## Quest 5: Re-ranking 도입 ✅
+> Hybrid 검색(상위 20개) → Novita.ai BGE-reranker-v2-m3로 재정렬 → 상위 5개 반환. relevance score가 신뢰도 지표로 활용됨 (0.9+: 신뢰, 0.5 미만: 데이터 부재 가능성).
 
 ## Quest 6: Query Rewriting 실험 ⬜
 > 사용자 질의를 LLM으로 재작성하여 검색 품질 향상. HyDE, Multi-query 등 기법 실험.

@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from rag_playground.adapters.llm.openai_chat import generate_answer
+from rag_playground.adapters.reranker.novita import rerank_hits
 from rag_playground.adapters.vectorstore.qdrant import (
     get_or_create_collection,
     get_or_create_hybrid_collection,
@@ -55,3 +56,17 @@ def answer_query_hybrid(
     hits = search_hybrid(query, collection_name=collection_name, n_results=n_results)
     answer = generate_answer(query, hits)
     return hits, answer
+
+
+def answer_query_rerank(
+    query: str,
+    collection_name: str,
+    n_results: int = 5,
+    fetch_multiplier: int = 4,
+) -> tuple[list[dict[str, Any]], str]:
+    """Hybrid 검색 → Re-rank 2단계 파이프라인."""
+    fetch_n = n_results * fetch_multiplier
+    hits = search_hybrid(query, collection_name=collection_name, n_results=fetch_n)
+    reranked = rerank_hits(query, hits, top_n=n_results)
+    answer = generate_answer(query, reranked)
+    return reranked, answer

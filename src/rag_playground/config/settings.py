@@ -18,3 +18,5 @@ OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 
 QDRANT_URL: str = os.getenv("QDRANT_URL", "")
 QDRANT_API_KEY: str = os.getenv("QDRANT_API_KEY", "")
+
+NOVITA_API_KEY: str = os.getenv("NOVITA_API_KEY", "")
