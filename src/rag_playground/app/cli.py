@@ -14,6 +14,8 @@ from rag_playground.application.answer import (
     answer_query,
     answer_query_bm25,
     answer_query_hybrid,
+    answer_query_hyde_rerank,
+    answer_query_multi_rerank,
     answer_query_rerank,
     load_collection,
     load_hybrid_collection,
@@ -24,6 +26,8 @@ SEARCH_MODES = {
     "2": ("bm25", "BM25 (키워드 검색)"),
     "3": ("hybrid", "Hybrid (벡터 + 키워드 RRF)"),
     "4": ("rerank", "Hybrid + Re-rank (BGE-reranker-v2-m3)"),
+    "5": ("hyde_rerank", "HyDE + Hybrid + Re-rank"),
+    "6": ("multi_rerank", "Multi-Query + Hybrid + Re-rank"),
 }
 
 
@@ -41,7 +45,7 @@ def select_mode() -> str:
         print(f"  {key}. {desc}")
 
     while True:
-        choice = input("\n선택 (1/2/3/4) [1]: ").strip()
+        choice = input("\n선택 (1/2/3/4/5/6) [1]: ").strip()
         if not choice:
             choice = "1"
         if choice in SEARCH_MODES:
@@ -58,7 +62,7 @@ def print_hits(hits: list[dict[str, Any]], mode: str) -> None:
     print(f"\n📚 검색된 문서 {len(hits)}건:")
     for index, hit in enumerate(hits, start=1):
         metadata = hit["metadata"]
-        if mode == "rerank":
+        if mode in ("rerank", "hyde_rerank", "multi_rerank"):
             score = hit.get("relevance_score", 0)
             label = "relevance"
         elif mode == "naive":
@@ -86,6 +90,8 @@ def main() -> None:
         "bm25": "BM25",
         "hybrid": "Hybrid (Dense+BM25 RRF)",
         "rerank": "Hybrid + Re-rank",
+        "hyde_rerank": "HyDE + Hybrid + Re-rank",
+        "multi_rerank": "Multi-Query + Hybrid + Re-rank",
     }
     print(f"\n✅ [{mode_labels[mode]}] 모드 선택됨")
 
@@ -112,6 +118,8 @@ def main() -> None:
         "bm25": answer_query_bm25,
         "hybrid": answer_query_hybrid,
         "rerank": answer_query_rerank,
+        "hyde_rerank": answer_query_hyde_rerank,
+        "multi_rerank": answer_query_multi_rerank,
     }[mode]
 
     print("🔍 질문을 입력하세요 (종료: q)\n")

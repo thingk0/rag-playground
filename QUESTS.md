@@ -17,8 +17,8 @@ RAG 파이프라인을 단계적으로 완성해 나가는 퀘스트 보드.
 ## Quest 5: Re-ranking 도입 ✅
 > Hybrid 검색(상위 20개) → Novita.ai BGE-reranker-v2-m3로 재정렬 → 상위 5개 반환. relevance score가 신뢰도 지표로 활용됨 (0.9+: 신뢰, 0.5 미만: 데이터 부재 가능성).
 
-## Quest 6: Query Rewriting 실험 ⬜
-> 사용자 질의를 LLM으로 재작성하여 검색 품질 향상. HyDE, Multi-query 등 기법 실험.
+## Quest 6: Query Rewriting 실험 ✅
+> 사용자 질의를 LLM으로 재작성하여 검색 품질 향상. HyDE(가상 문서 임베딩)와 Multi-Query(대안 질의 3개 생성 후 결과 합산) 기법 구현. 두 기법 모두 Hybrid + Re-rank 파이프라인 위에 합성되며, 재작성 질의는 검색에만 사용하고 리랭킹·답변 생성에는 원본 질의 유지.
 
 ## Quest 7: Agentic RAG 구현 ⬜
 > 에이전트가 스스로 검색 전략을 판단하고, 다중 데이터 소스를 활용하는 자율 RAG 시스템 완성. 최종 보스 퀘스트.

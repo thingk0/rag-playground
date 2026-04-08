@@ -2,11 +2,17 @@
 
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 from rag_playground.adapters.llm.openai_chat import generate_answer
+from rag_playground.adapters.query_rewriter.openai_rewriter import (
+    generate_hypothetical_document,
+    generate_multi_queries,
+)
 from rag_playground.adapters.reranker.novita import rerank_hits
 from rag_playground.adapters.vectorstore.qdrant import (
+    embed_texts,
     get_or_create_collection,
     get_or_create_hybrid_collection,
     search,
@@ -68,5 +74,58 @@ def answer_query_rerank(
     fetch_n = n_results * fetch_multiplier
     hits = search_hybrid(query, collection_name=collection_name, n_results=fetch_n)
     reranked = rerank_hits(query, hits, top_n=n_results)
+    answer = generate_answer(query, reranked)
+    return reranked, answer
+
+
+def answer_query_hyde_rerank(
+    query: str,
+    collection_name: str,
+    n_results: int = 5,
+    fetch_multiplier: int = 4,
+) -> tuple[list[dict[str, Any]], str]:
+    """HyDE → Hybrid 검색 → Re-rank 3단계 파이프라인."""
+    hypothetical_doc = generate_hypothetical_document(query)
+    hyde_vector = embed_texts([hypothetical_doc])[0]
+    fetch_n = n_results * fetch_multiplier
+    hits = search_hybrid(
+        query,
+        collection_name=collection_name,
+        n_results=fetch_n,
+        dense_query_vector=hyde_vector,
+    )
+    reranked = rerank_hits(query, hits, top_n=n_results)
+    answer = generate_answer(query, reranked)
+    return reranked, answer
+
+
+def answer_query_multi_rerank(
+    query: str,
+    collection_name: str,
+    n_results: int = 5,
+    fetch_multiplier: int = 4,
+) -> tuple[list[dict[str, Any]], str]:
+    """Multi-Query → Hybrid 검색 → Re-rank 3단계 파이프라인."""
+    alt_queries = generate_multi_queries(query, n=3)
+    fetch_n = n_results * fetch_multiplier
+    all_queries = [query] + alt_queries
+    with ThreadPoolExecutor(max_workers=len(all_queries)) as executor:
+        futures = [
+            executor.submit(search_hybrid, q, collection_name, n_results=fetch_n)
+            for q in all_queries
+        ]
+        all_hits: list[dict[str, Any]] = []
+        for future in futures:
+            all_hits.extend(future.result())
+
+    seen: set[str] = set()
+    unique_hits: list[dict[str, Any]] = []
+    for hit in all_hits:
+        doc_text = hit["document"]
+        if doc_text not in seen:
+            seen.add(doc_text)
+            unique_hits.append(hit)
+
+    reranked = rerank_hits(query, unique_hits, top_n=n_results)
     answer = generate_answer(query, reranked)
     return reranked, answer

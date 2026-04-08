@@ -11,11 +11,17 @@ from __future__ import annotations
 import argparse
 import logging
 import time
+from concurrent.futures import ThreadPoolExecutor
 
+from rag_playground.adapters.query_rewriter.openai_rewriter import (
+    generate_hypothetical_document,
+    generate_multi_queries,
+)
 from rag_playground.adapters.reranker.novita import rerank_hits
 from rag_playground.adapters.vectorstore.qdrant import (
     COLLECTION_NAME,
     HYBRID_COLLECTION_NAME,
+    embed_texts,
     get_qdrant_client,
     search,
     search_bm25,
@@ -30,11 +36,42 @@ DEFAULT_QUERIES = [
     "아이스크림 가게",
 ]
 
+def _search_hyde_rerank(query: str, collection: str) -> list[dict]:
+    """HyDE + Hybrid + Rerank 검색."""
+    hypothetical_doc = generate_hypothetical_document(query)
+    hyde_vector = embed_texts([hypothetical_doc])[0]
+    hits = search_hybrid(query, collection_name=collection, n_results=20, dense_query_vector=hyde_vector)
+    return rerank_hits(query, hits, top_n=5)
+
+
+def _search_multi_rerank(query: str, collection: str) -> list[dict]:
+    """Multi-Query + Hybrid + Rerank 검색."""
+    alt_queries = generate_multi_queries(query, n=3)
+    all_queries = [query] + alt_queries
+    with ThreadPoolExecutor(max_workers=len(all_queries)) as executor:
+        futures = [
+            executor.submit(search_hybrid, q, collection, n_results=20)
+            for q in all_queries
+        ]
+        all_hits: list[dict] = []
+        for future in futures:
+            all_hits.extend(future.result())
+    seen: set[str] = set()
+    unique: list[dict] = []
+    for hit in all_hits:
+        if hit["document"] not in seen:
+            seen.add(hit["document"])
+            unique.append(hit)
+    return rerank_hits(query, unique, top_n=5)
+
+
 MODE_SEARCH = {
     "naive": lambda q, c: search(q, collection_name=c),
     "bm25": lambda q, c: search_bm25(q, collection_name=c),
     "hybrid": lambda q, c: search_hybrid(q, collection_name=c),
     "rerank": lambda q, c: rerank_hits(q, search_hybrid(q, collection_name=c, n_results=20), top_n=5),
+    "hyde_rerank": _search_hyde_rerank,
+    "multi_rerank": _search_multi_rerank,
 }
 
 MODE_COLLECTION = {
@@ -42,6 +79,8 @@ MODE_COLLECTION = {
     "bm25": HYBRID_COLLECTION_NAME,
     "hybrid": HYBRID_COLLECTION_NAME,
     "rerank": HYBRID_COLLECTION_NAME,
+    "hyde_rerank": HYBRID_COLLECTION_NAME,
+    "multi_rerank": HYBRID_COLLECTION_NAME,
 }
 
 
@@ -60,7 +99,7 @@ def print_result(mode: str, hits: list[dict], elapsed: float) -> None:
         return
     for idx, hit in enumerate(hits, start=1):
         meta = hit["metadata"]
-        if mode == "rerank":
+        if mode in ("rerank", "hyde_rerank", "multi_rerank"):
             score = hit.get("relevance_score", 0)
             label = "relevance"
         else:
@@ -94,7 +133,7 @@ def run_comparison(queries: list[str], n_results: int = 5) -> None:
         print(f"\n🔍 질의: \"{query}\"")
         print("-" * 40)
 
-        for mode in ("naive", "bm25", "hybrid", "rerank"):
+        for mode in ("naive", "bm25", "hybrid", "rerank", "hyde_rerank", "multi_rerank"):
             collection = MODE_COLLECTION[mode]
             start = time.time()
             hits = MODE_SEARCH[mode](query, collection)

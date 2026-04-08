@@ -8,7 +8,7 @@ from openai import OpenAI
 
 from rag_playground.config import OPENAI_API_KEY
 
-LLM_MODEL = "gpt-4o-mini"
+LLM_MODEL = "gpt-5.4-mini"
 
 SYSTEM_PROMPT = """\
 당신은 부산광역시 가족사랑카드 참여업체 안내 도우미입니다.
@@ -45,7 +45,7 @@ def generate_answer(query: str, retrieved_docs: list[dict[str, Any]]) -> str:
             {"role": "user", "content": user_message},
         ],
         temperature=0.3,
-        max_tokens=1024,
+        max_completion_tokens=1024,
     )
 
     return response.choices[0].message.content or ""

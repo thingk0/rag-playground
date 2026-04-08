@@ -240,12 +240,13 @@ def search_hybrid(
     client: QdrantClient | None = None,
     n_results: int = 5,
     prefetch_limit: int = 20,
+    dense_query_vector: list[float] | None = None,
 ) -> list[dict[str, Any]]:
     """Dense + BM25 하이브리드 검색을 RRF로 결합한다."""
     if client is None:
         client = get_qdrant_client()
 
-    query_vector = embed_texts([query])[0]
+    query_vector = dense_query_vector if dense_query_vector is not None else embed_texts([query])[0]
     results = client.query_points(
         collection_name=collection_name,
         prefetch=[

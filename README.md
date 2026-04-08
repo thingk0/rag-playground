@@ -16,6 +16,7 @@ RAG(Retrieval-Augmented Generation) 기술을 Naive RAG부터 Agentic RAG까지 
 | Embedding | OpenAI `text-embedding-3-small` (1536차원) |
 | LLM | OpenAI `gpt-4o-mini` |
 | Re-ranker | Novita.ai `BGE-reranker-v2-m3` |
+| Query Rewriter | OpenAI `gpt-4o-mini` (HyDE, Multi-Query) |
 | Language | Python 3.13+ (uv + src layout) |
 
 ## 데이터 소스
@@ -31,7 +32,7 @@ RAG(Retrieval-Augmented Generation) 기술을 Naive RAG부터 Agentic RAG까지 
 1. **Naive RAG** — 기본 파이프라인 구축 ✅
 2. **Hybrid Search** — 키워드 + 벡터 검색 결합 ✅
 3. **Re-ranking** — Hybrid(20개) → BGE-reranker-v2-m3 재정렬 ✅
-4. **Query Rewriting** — 질의 최적화
+4. **Query Rewriting** — 질의 최적화 ✅ (HyDE, Multi-Query)
 5. **Agentic RAG** — 에이전트 기반 자율 검색
 
 추가로 다양한 임베딩 모델 및 벡터 DB 비교 실험도 진행 예정.
@@ -65,7 +66,7 @@ uv run python -m rag_playground.application.index --mode hybrid
 # 검색 모드 비교
 uv run python -m rag_playground.application.compare
 
-# 대화형 CLI (모드 선택: Naive / BM25 / Hybrid / Hybrid+Rerank)
+# 대화형 CLI (모드 선택: Naive / BM25 / Hybrid / Rerank / HyDE+Rerank / Multi-Query+Rerank)
 uv run python -m rag_playground.app.cli
 ```
 
