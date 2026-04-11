@@ -1,0 +1,123 @@
+[
+  {
+    "name": "동구도서관",
+    "address": "부산광역시 동구 성북로 36번길 54",
+    "district": "동구",
+    "phone": "",
+    "homepage": "http://www.bsdonggu.go.kr/library",
+    "category": "공공도서관",
+    "benefit": "열람 및 독서문화 프로그램 이용 가능",
+    "source": "부산광역시_도서관 정보",
+    "collected_at": "2026-04-09T00:20:00+09:00"
+  },
+  {
+    "name": "부산진구어린이청소년도서관",
+    "address": "부산광역시 부산진구 백양순환로110번길 25",
+    "district": "부산진구",
+    "phone": "051-605-5801",
+    "homepage": "https://www.busanjin.go.kr/cylib/index.busanjin?cpath=close",
+    "category": "공공도서관",
+    "benefit": "어린이·청소년 특화 열람 및 문화 프로그램 이용 가능",
+    "source": "부산광역시_도서관 정보",
+    "collected_at": "2026-04-09T00:20:00+09:00"
+  },
+  {
+    "name": "부산진구기적의도서관",
+    "address": "부산광역시 부산진구 범양로125번길 19",
+    "district": "부산진구",
+    "phone": "",
+    "homepage": "https://www.busanjin.go.kr/library/index.busanjin",
+    "category": "공공도서관",
+    "benefit": "가족 독서 및 어린이 프로그램 이용 가능",
+    "source": "부산광역시_도서관 정보",
+    "collected_at": "2026-04-09T00:20:00+09:00"
+  },
+  {
+    "name": "연제도서관",
+    "address": "부산광역시 연제구 황령산로 612(연산동)",
+    "district": "연제구",
+    "phone": "",
+    "homepage": "http://www.yeonje.go.kr/library/main.do",
+    "category": "공공도서관",
+    "benefit": "열람실 및 독서문화 프로그램 이용 가능",
+    "source": "부산광역시_도서관 정보",
+    "collected_at": "2026-04-09T00:20:00+09:00"
+  },
+  {
+    "name": "토곡어린이작은도서관",
+    "address": "부산광역시 연제구 고분로241번길 26(연산동) 2층",
+    "district": "연제구",
+    "phone": "051-665-5527",
+    "homepage": "",
+    "category": "작은도서관",
+    "benefit": "어린이 대상 열람 및 독서 활동 지원",
+    "source": "부산광역시_도서관 정보",
+    "collected_at": "2026-04-09T00:20:00+09:00"
+  },
+  {
+    "name": "정관어린이도서관",
+    "address": "부산광역시 기장군 정관읍 정관8로 11",
+    "district": "기장군",
+    "phone": "051-709-5386",
+    "homepage": "http://library.gijang.go.kr/jgchildlib/main.do",
+    "category": "공공도서관",
+    "benefit": "어린이 특화 열람 및 가족 프로그램 이용 가능",
+    "source": "부산광역시_도서관 정보",
+    "collected_at": "2026-04-09T00:20:00+09:00"
+  },
+  {
+    "name": "대라다목적도서관",
+    "address": "부산광역시 기장군 기장읍 차성서로86",
+    "district": "기장군",
+    "phone": "",
+    "homepage": "http://library.gijang.go.kr/daera/main.do",
+    "category": "공공도서관",
+    "benefit": "열람 및 지역 문화 프로그램 이용 가능",
+    "source": "부산광역시_도서관 정보",
+    "collected_at": "2026-04-09T00:20:00+09:00"
+  },
+  {
+    "name": "푸른누리작은도서관",
+    "address": "부산광역시 사하구 감천로83번길 26(감천동)",
+    "district": "사하구",
+    "phone": "051-202-4466",
+    "homepage": "http://www.saha.go.kr/portal/contents.do?mId=0607010000",
+    "category": "작은도서관",
+    "benefit": "열람 및 마을 독서문화 프로그램 이용 가능",
+    "source": "부산광역시_도서관 정보",
+    "collected_at": "2026-04-09T00:20:00+09:00"
+  },
+  {
+    "name": "감천횃불작은도서관",
+    "address": "부산광역시 사하구 감내1로175번길 50(감천동)",
+    "district": "사하구",
+    "phone": "",
+    "homepage": "http://www.saha.go.kr/portal/contents.do?mId=0607010000",
+    "category": "작은도서관",
+    "benefit": "지역 주민 대상 열람 및 독서 활동 지원",
+    "source": "부산광역시_도서관 정보",
+    "collected_at": "2026-04-09T00:20:00+09:00"
+  },
+  {
+    "name": "주례2동 작은도서관",
+    "address": "부산광역시 사상구 주례로10번길 15 (주례동)",
+    "district": "사상구",
+    "phone": "051-310-5269",
+    "homepage": "",
+    "category": "작은도서관",
+    "benefit": "지역 주민 대상 열람 및 도서 대출 지원",
+    "source": "부산광역시_도서관 정보",
+    "collected_at": "2026-04-09T00:20:00+09:00"
+  },
+  {
+    "name": "주례쌈지 작은도서관",
+    "address": "부산광역시 사상구 냉정로 10 (주례동)",
+    "district": "사상구",
+    "phone": "",
+    "homepage": "",
+    "category": "작은도서관",
+    "benefit": "생활권 독서 공간 및 소규모 열람 지원",
+    "source": "부산광역시_도서관 정보",
+    "collected_at": "2026-04-09T00:20:00+09:00"
+  }
+]

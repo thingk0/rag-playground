@@ -210,4 +210,5 @@ __marimo__/
 .claude
 
 data/raw/*
+!data/raw/busan_libraries.json
 data/chroma/

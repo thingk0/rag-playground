@@ -12,6 +12,7 @@ load_dotenv(PROJECT_ROOT / ".env")
 
 RAW_DATA_DIR = PROJECT_ROOT / "data" / "raw"
 DEFAULT_FAMILY_CARD_JSON_PATH = RAW_DATA_DIR / "family_card_shops.json"
+DEFAULT_LIBRARY_JSON_PATH = RAW_DATA_DIR / "busan_libraries.json"
 
 DATA_GO_KR_API_KEY: str = os.getenv("DATA_GO_KR_API_KEY", "")
 OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")

@@ -20,6 +20,8 @@ from rag_playground.application.answer import (
     load_collection,
     load_hybrid_collection,
 )
+from rag_playground.application.agentic import run_agentic_query
+from rag_playground.application.sources import get_all_source_configs
 
 SEARCH_MODES = {
     "1": ("naive", "Naive RAG (벡터 검색)"),
@@ -28,13 +30,17 @@ SEARCH_MODES = {
     "4": ("rerank", "Hybrid + Re-rank (BGE-reranker-v2-m3)"),
     "5": ("hyde_rerank", "HyDE + Hybrid + Re-rank"),
     "6": ("multi_rerank", "Multi-Query + Hybrid + Re-rank"),
+    "7": ("agentic", "Agentic RAG (멀티 소스 + 전략 선택 + fallback)"),
 }
 
 
 def get_document_count(collection_name: str) -> int:
     """컬렉션의 문서 수를 반환한다."""
     client = get_qdrant_client()
-    info = client.get_collection(collection_name=collection_name)
+    try:
+        info = client.get_collection(collection_name=collection_name)
+    except Exception:
+        return 0
     return info.points_count or 0
 
 
@@ -45,12 +51,17 @@ def select_mode() -> str:
         print(f"  {key}. {desc}")
 
     while True:
-        choice = input("\n선택 (1/2/3/4/5/6) [1]: ").strip()
+        choice = input("\n선택 (1/2/3/4/5/6/7) [1]: ").strip()
         if not choice:
             choice = "1"
         if choice in SEARCH_MODES:
             return SEARCH_MODES[choice][0]
-        print("⚠️  1, 2, 3, 4 중 하나를 선택하세요.")
+        print("⚠️  1~7 중 하나를 선택하세요.")
+
+
+def _format_hit_title(metadata: dict[str, Any]) -> str:
+    """소스별 제목 필드를 통합한다."""
+    return metadata.get("title") or metadata.get("shop_name") or metadata.get("name") or "?"
 
 
 def print_hits(hits: list[dict[str, Any]], mode: str) -> None:
@@ -72,8 +83,9 @@ def print_hits(hits: list[dict[str, Any]], mode: str) -> None:
             score = hit.get("score", 0)
             label = "score"
         print(
-            f"  {index}. {metadata.get('shop_name', '?')} ({metadata.get('district', '?')}) "
-            f"— {metadata.get('benefit', '정보 없음')}  [{label}: {score:.4f}]"
+            f"  {index}. {_format_hit_title(metadata)} ({metadata.get('district', '?')}) "
+            f"/ {metadata.get('source_label', '?')} — {metadata.get('summary') or metadata.get('benefit', '정보 없음')} "
+            f"[{label}: {score:.4f}]"
         )
 
 
@@ -81,7 +93,7 @@ def main() -> None:
     """대화형 검색 CLI."""
     logging.basicConfig(level=logging.WARNING, format="%(asctime)s - %(levelname)s - %(message)s")
 
-    print("\n🚀 부산 가족사랑카드 업체 검색")
+    print("\n🚀 부산 공공데이터 RAG Playground")
     print("=" * 50)
 
     mode = select_mode()
@@ -92,19 +104,35 @@ def main() -> None:
         "rerank": "Hybrid + Re-rank",
         "hyde_rerank": "HyDE + Hybrid + Re-rank",
         "multi_rerank": "Multi-Query + Hybrid + Re-rank",
+        "agentic": "Agentic RAG",
     }
     print(f"\n✅ [{mode_labels[mode]}] 모드 선택됨")
 
     print("📦 벡터스토어 로딩 중...")
-    if mode == "naive":
+    if mode == "agentic":
+        source_counts = {
+            source.label: get_document_count(source.hybrid_collection_name)
+            for source in get_all_source_configs()
+        }
+        for label, count in source_counts.items():
+            print(f"  - {label}: {count}건")
+        if any(count == 0 for count in source_counts.values()):
+            print("⚠️  Agentic RAG는 멀티 소스 하이브리드 인덱스가 필요합니다.")
+            print("   uv run python -m rag_playground.application.ingest --source all")
+            print("   uv run python -m rag_playground.application.index --mode hybrid --source all")
+            return
+        print("✅ Agentic RAG에 필요한 멀티 소스 인덱스가 준비되었습니다.\n")
+        collection_name = ""
+    elif mode == "naive":
         collection_name = load_collection()
     else:
         collection_name = load_hybrid_collection()
 
-    doc_count = get_document_count(collection_name)
-    print(f"✅ {doc_count}건의 업체 정보가 준비되었습니다.\n")
+    doc_count = get_document_count(collection_name) if collection_name else 0
+    if collection_name:
+        print(f"✅ {doc_count}건의 문서가 준비되었습니다.\n")
 
-    if doc_count == 0:
+    if collection_name and doc_count == 0:
         if mode == "naive":
             print("⚠️  인덱싱된 문서가 없습니다. 먼저 인덱싱을 실행해주세요:")
             print("   uv run python -m rag_playground.application.index")
@@ -120,7 +148,7 @@ def main() -> None:
         "rerank": answer_query_rerank,
         "hyde_rerank": answer_query_hyde_rerank,
         "multi_rerank": answer_query_multi_rerank,
-    }[mode]
+    }.get(mode)
 
     print("🔍 질문을 입력하세요 (종료: q)\n")
 
@@ -137,8 +165,18 @@ def main() -> None:
             print("👋 종료합니다.")
             break
 
-        hits, answer = answer_fn(query=query, collection_name=collection_name, n_results=5)
-        print_hits(hits, mode)
+        if mode == "agentic":
+            result = run_agentic_query(query=query, n_results=5)
+            print_hits(result.hits, "rerank")
+            print("\n🧠 Agent Trace:")
+            print(
+                f"  sources={', '.join(result.plan.sources)} / initial={result.plan.initial_mode} "
+                f"/ selected={result.selected_mode} / success={result.success}"
+            )
+            answer = result.answer
+        else:
+            hits, answer = answer_fn(query=query, collection_name=collection_name, n_results=5)
+            print_hits(hits, mode)
 
         print("\n💬 답변 생성 중...")
         print(f"\n💬 답변:\n{answer}\n")

@@ -11,22 +11,13 @@ from __future__ import annotations
 import argparse
 import logging
 import time
-from concurrent.futures import ThreadPoolExecutor
 
-from rag_playground.adapters.query_rewriter.openai_rewriter import (
-    generate_hypothetical_document,
-    generate_multi_queries,
-)
-from rag_playground.adapters.reranker.novita import rerank_hits
 from rag_playground.adapters.vectorstore.qdrant import (
-    COLLECTION_NAME,
-    HYBRID_COLLECTION_NAME,
-    embed_texts,
     get_qdrant_client,
-    search,
-    search_bm25,
-    search_hybrid,
 )
+from rag_playground.application.agentic import run_agentic_query
+from rag_playground.application.answer import retrieve_hits
+from rag_playground.application.sources import get_source_config
 
 DEFAULT_QUERIES = [
     "부산진구 한식 맛집",
@@ -34,60 +25,17 @@ DEFAULT_QUERIES = [
     "미용실 저렴한 곳",
     "동래구 목욕탕",
     "아이스크림 가게",
+    "이번 주말에 아이들이랑 갈 만한 데",
 ]
-
-def _search_hyde_rerank(query: str, collection: str) -> list[dict]:
-    """HyDE + Hybrid + Rerank 검색."""
-    hypothetical_doc = generate_hypothetical_document(query)
-    hyde_vector = embed_texts([hypothetical_doc])[0]
-    hits = search_hybrid(query, collection_name=collection, n_results=20, dense_query_vector=hyde_vector)
-    return rerank_hits(query, hits, top_n=5)
-
-
-def _search_multi_rerank(query: str, collection: str) -> list[dict]:
-    """Multi-Query + Hybrid + Rerank 검색."""
-    alt_queries = generate_multi_queries(query, n=3)
-    all_queries = [query] + alt_queries
-    with ThreadPoolExecutor(max_workers=len(all_queries)) as executor:
-        futures = [
-            executor.submit(search_hybrid, q, collection, n_results=20)
-            for q in all_queries
-        ]
-        all_hits: list[dict] = []
-        for future in futures:
-            all_hits.extend(future.result())
-    seen: set[str] = set()
-    unique: list[dict] = []
-    for hit in all_hits:
-        if hit["document"] not in seen:
-            seen.add(hit["document"])
-            unique.append(hit)
-    return rerank_hits(query, unique, top_n=5)
-
-
-MODE_SEARCH = {
-    "naive": lambda q, c: search(q, collection_name=c),
-    "bm25": lambda q, c: search_bm25(q, collection_name=c),
-    "hybrid": lambda q, c: search_hybrid(q, collection_name=c),
-    "rerank": lambda q, c: rerank_hits(q, search_hybrid(q, collection_name=c, n_results=20), top_n=5),
-    "hyde_rerank": _search_hyde_rerank,
-    "multi_rerank": _search_multi_rerank,
-}
-
-MODE_COLLECTION = {
-    "naive": COLLECTION_NAME,
-    "bm25": HYBRID_COLLECTION_NAME,
-    "hybrid": HYBRID_COLLECTION_NAME,
-    "rerank": HYBRID_COLLECTION_NAME,
-    "hyde_rerank": HYBRID_COLLECTION_NAME,
-    "multi_rerank": HYBRID_COLLECTION_NAME,
-}
 
 
 def get_doc_count(collection_name: str) -> int:
     """컬렉션 문서 수를 반환한다."""
     client = get_qdrant_client()
-    info = client.get_collection(collection_name=collection_name)
+    try:
+        info = client.get_collection(collection_name=collection_name)
+    except Exception:
+        return 0
     return info.points_count or 0
 
 
@@ -99,32 +47,41 @@ def print_result(mode: str, hits: list[dict], elapsed: float) -> None:
         return
     for idx, hit in enumerate(hits, start=1):
         meta = hit["metadata"]
-        if mode in ("rerank", "hyde_rerank", "multi_rerank"):
+        if mode in ("rerank", "hyde_rerank", "multi_rerank", "agentic"):
             score = hit.get("relevance_score", 0)
             label = "relevance"
         else:
             score = hit.get("score", 1 - hit.get("distance", 0))
             label = "score"
-        print(f"    {idx}. {meta.get('shop_name', '?')} ({meta.get('district', '?')}) "
-              f"— {meta.get('benefit', '')}  [{label}: {score:.4f}]")
+        title = meta.get("title") or meta.get("shop_name") or meta.get("name") or "?"
+        source_label = meta.get("source_label", "?")
+        summary = meta.get("summary") or meta.get("benefit", "")
+        print(
+            f"    {idx}. {title} ({meta.get('district', '?')}) / {source_label} "
+            f"— {summary}  [{label}: {score:.4f}]"
+        )
     print()
 
 
 def run_comparison(queries: list[str], n_results: int = 5) -> None:
-    """여러 쿼리에 대해 세 모드의 결과를 비교한다."""
-    # 컬렉션 상태 확인
-    naive_count = get_doc_count(COLLECTION_NAME)
-    hybrid_count = get_doc_count(HYBRID_COLLECTION_NAME)
+    """여러 쿼리에 대해 검색 모드 결과를 비교한다."""
+    family = get_source_config("family_card")
+    library = get_source_config("library")
+    family_naive_count = get_doc_count(family.collection_name)
+    family_hybrid_count = get_doc_count(family.hybrid_collection_name)
+    library_hybrid_count = get_doc_count(library.hybrid_collection_name)
 
     print("\n📊 컬렉션 상태:")
-    print(f"  Naive (family_card_shops):        {naive_count}건")
-    print(f"  Hybrid (family_card_shops_hybrid): {hybrid_count}건")
+    print(f"  Family Naive ({family.collection_name}): {family_naive_count}건")
+    print(f"  Family Hybrid ({family.hybrid_collection_name}): {family_hybrid_count}건")
+    print(f"  Library Hybrid ({library.hybrid_collection_name}): {library_hybrid_count}건")
 
-    if naive_count == 0:
-        print("\n⚠️  Naive 컬렉션이 비어있습니다: uv run python -m rag_playground.application.index")
+    if family_naive_count == 0:
+        print("\n⚠️  Family naive 컬렉션이 비어있습니다: uv run python -m rag_playground.application.index")
         return
-    if hybrid_count == 0:
-        print("\n⚠️  Hybrid 컬렉션이 비어있습니다: uv run python -m rag_playground.application.index --mode hybrid")
+    if family_hybrid_count == 0 or library_hybrid_count == 0:
+        print("\n⚠️  하이브리드 컬렉션이 비어있습니다:")
+        print("   uv run python -m rag_playground.application.index --mode hybrid --source all")
         return
 
     print(f"\n{'=' * 60}")
@@ -133,10 +90,19 @@ def run_comparison(queries: list[str], n_results: int = 5) -> None:
         print(f"\n🔍 질의: \"{query}\"")
         print("-" * 40)
 
-        for mode in ("naive", "bm25", "hybrid", "rerank", "hyde_rerank", "multi_rerank"):
-            collection = MODE_COLLECTION[mode]
+        for mode in ("naive", "bm25", "hybrid", "rerank", "hyde_rerank", "multi_rerank", "agentic"):
             start = time.time()
-            hits = MODE_SEARCH[mode](query, collection)
+            if mode == "agentic":
+                hits = run_agentic_query(query, n_results=n_results).hits
+            else:
+                collection = family.collection_name if mode == "naive" else family.hybrid_collection_name
+                hits = retrieve_hits(
+                    query,
+                    collection_name=collection,
+                    mode=mode,
+                    n_results=n_results,
+                    domain_context=family.domain_hint,
+                )
             elapsed = time.time() - start
             print_result(mode, hits, elapsed)
 

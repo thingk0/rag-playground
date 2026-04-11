@@ -11,9 +11,10 @@ from rag_playground.config import OPENAI_API_KEY
 LLM_MODEL = "gpt-5.4-mini"
 
 SYSTEM_PROMPT = """\
-당신은 부산광역시 가족사랑카드 참여업체 안내 도우미입니다.
+당신은 부산광역시 생활 정보 안내 도우미입니다.
 아래 검색된 정보를 바탕으로 사용자의 질문에 정확하게 답해주세요.
 검색된 정보에 없는 내용은 "해당 정보를 찾을 수 없습니다"라고 답하세요.
+서로 다른 데이터 소스의 정보가 함께 들어올 수 있으니, 출처와 성격을 혼동하지 마세요.
 답변은 친절하고 간결하게 작성하세요."""
 
 
@@ -24,7 +25,9 @@ def build_prompt(query: str, retrieved_docs: list[dict[str, Any]]) -> str:
     else:
         context_parts: list[str] = []
         for index, doc in enumerate(retrieved_docs, start=1):
-            context_parts.append(f"--- 검색 결과 {index} ---\n{doc['document']}")
+            metadata = doc.get("metadata", {})
+            source_label = metadata.get("source_label") or metadata.get("source") or "알 수 없음"
+            context_parts.append(f"--- 검색 결과 {index} / 출처: {source_label} ---\n{doc['document']}")
         context = "\n\n".join(context_parts)
 
     return f"[검색된 정보]\n{context}\n\n[사용자 질문]\n{query}"

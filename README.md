@@ -14,18 +14,18 @@ RAG(Retrieval-Augmented Generation) 기술을 Naive RAG부터 Agentic RAG까지 
 |------|------|
 | Vector DB | Qdrant Cloud (Dense + Sparse BM25) |
 | Embedding | OpenAI `text-embedding-3-small` (1536차원) |
-| LLM | OpenAI `gpt-4o-mini` |
+| LLM | OpenAI `gpt-5.4-mini` |
 | Re-ranker | Novita.ai `BGE-reranker-v2-m3` |
-| Query Rewriter | OpenAI `gpt-4o-mini` (HyDE, Multi-Query) |
+| Query Rewriter | OpenAI `gpt-5.4-mini` (HyDE, Multi-Query) |
 | Language | Python 3.13+ (uv + src layout) |
 
 ## 데이터 소스
 
-[공공데이터포털](https://www.data.go.kr/) API 활용
+[공공데이터포털](https://www.data.go.kr/) API 및 스냅샷 데이터 활용
 
-- 무료 제공, 공식 API로 법적 문제 없음
-- 날씨, 교통, 의료, 부동산 등 다양한 도메인
-- 실전적인 데이터로 의미 있는 RAG 실험 가능
+- `family_card`: 부산광역시 가족사랑카드 참여업체 현황 API
+- `library`: 부산광역시 도서관 정보 스냅샷 JSON
+- 도서관 OpenAPI는 계정 승인 이슈로 `403`이 발생해, Quest 7에서는 체크인된 스냅샷으로 멀티 소스를 구성
 
 ## 실험 로드맵
 
@@ -33,9 +33,17 @@ RAG(Retrieval-Augmented Generation) 기술을 Naive RAG부터 Agentic RAG까지 
 2. **Hybrid Search** — 키워드 + 벡터 검색 결합 ✅
 3. **Re-ranking** — Hybrid(20개) → BGE-reranker-v2-m3 재정렬 ✅
 4. **Query Rewriting** — 질의 최적화 ✅ (HyDE, Multi-Query)
-5. **Agentic RAG** — 에이전트 기반 자율 검색
+5. **Agentic RAG** — 에이전트 기반 자율 검색 ✅
 
-추가로 다양한 임베딩 모델 및 벡터 DB 비교 실험도 진행 예정.
+추가로 정량 평가(NDCG/MRR)와 더 다양한 데이터 소스 확장 실험을 진행 예정.
+
+## Quest 7 핵심 기능
+
+- 질의 모호함을 분석해 `rerank` / `multi_rerank` / `hyde_rerank`를 선택
+- 소스별 키워드 휴리스틱으로 `family_card` / `library` 라우팅
+- relevance score 기반 fallback
+- fallback 시 단일 소스에서 멀티 소스로 확장
+- 최종 답변은 항상 원본 질의를 기준으로 생성
 
 ## 실험 결과
 
@@ -57,17 +65,33 @@ RAG(Retrieval-Augmented Generation) 기술을 Naive RAG부터 Agentic RAG까지 
 ## 실행 방법
 
 ```bash
-# Naive RAG 인덱싱
-uv run python -m rag_playground.application.index
+# 데이터 수집
+uv run python -m rag_playground.application.ingest --source family_card
+
+# 도서관은 저장소에 포함된 스냅샷 JSON 사용
+# 필요 시 API 시도: uv run python -m rag_playground.application.ingest --source library
 
 # Hybrid 인덱싱 (Dense + BM25 Sparse)
-uv run python -m rag_playground.application.index --mode hybrid
+uv run python -m rag_playground.application.index --mode hybrid --source all
 
 # 검색 모드 비교
 uv run python -m rag_playground.application.compare
 
-# 대화형 CLI (모드 선택: Naive / BM25 / Hybrid / Rerank / HyDE+Rerank / Multi-Query+Rerank)
+# Quest 7 planner preview
+uv run python -m rag_playground.application.agentic --query "이번 주말에 아이들이랑 갈 만한 데" --preview
+
+# Quest 7 Agentic 실행
+uv run python -m rag_playground.application.agentic --query "이번 주말에 아이들이랑 갈 만한 데"
+
+# 대화형 CLI (모드 선택: Naive / BM25 / Hybrid / Rerank / HyDE+Rerank / Multi-Query+Rerank / Agentic)
 uv run python -m rag_playground.app.cli
+```
+
+## 테스트
+
+```bash
+uv run ruff check src tests
+uv run python -m unittest
 ```
 
 ## 블로그
