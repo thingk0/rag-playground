@@ -1,0 +1,921 @@
+[
+  {
+    "query_id": "q01",
+    "query": "동래구 목욕탕",
+    "modes": {
+      "naive": {
+        "ndcg": 0.9108,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 1830.0,
+        "relevances": [
+          3,
+          2,
+          1,
+          3,
+          3
+        ]
+      },
+      "bm25": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 895.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "hybrid": {
+        "ndcg": 0.9558,
+        "mrr": 1.0,
+        "precision": 0.4,
+        "elapsed_ms": 1399.0,
+        "relevances": [
+          3,
+          0,
+          2,
+          0,
+          0
+        ]
+      },
+      "rerank": {
+        "ndcg": 0.9971,
+        "mrr": 1.0,
+        "precision": 0.8,
+        "elapsed_ms": 2641.0,
+        "relevances": [
+          3,
+          3,
+          3,
+          0,
+          1
+        ]
+      },
+      "hyde_rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.6,
+        "elapsed_ms": 4576.0,
+        "relevances": [
+          3,
+          3,
+          3,
+          0,
+          0
+        ]
+      },
+      "multi_rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.6,
+        "elapsed_ms": 3391.0,
+        "relevances": [
+          3,
+          3,
+          3,
+          0,
+          0
+        ]
+      },
+      "agentic": {
+        "ndcg": 0.9971,
+        "mrr": 1.0,
+        "precision": 0.8,
+        "elapsed_ms": 3557.0,
+        "relevances": [
+          3,
+          3,
+          3,
+          0,
+          1
+        ]
+      }
+    }
+  },
+  {
+    "query_id": "q02",
+    "query": "부산진구 한식 맛집",
+    "modes": {
+      "naive": {
+        "ndcg": 0.5218,
+        "mrr": 0.3333,
+        "precision": 0.6,
+        "elapsed_ms": 1414.0,
+        "relevances": [
+          0,
+          0,
+          2,
+          3,
+          1
+        ]
+      },
+      "bm25": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 861.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "hybrid": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 1306.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rerank": {
+        "ndcg": 0.7181,
+        "mrr": 0.5,
+        "precision": 0.8,
+        "elapsed_ms": 2995.0,
+        "relevances": [
+          0,
+          3,
+          2,
+          3,
+          3
+        ]
+      },
+      "hyde_rerank": {
+        "ndcg": 0.5461,
+        "mrr": 0.3333,
+        "precision": 0.6,
+        "elapsed_ms": 3986.0,
+        "relevances": [
+          0,
+          0,
+          2,
+          3,
+          2
+        ]
+      },
+      "multi_rerank": {
+        "ndcg": 0.6653,
+        "mrr": 0.5,
+        "precision": 0.4,
+        "elapsed_ms": 3641.0,
+        "relevances": [
+          0,
+          3,
+          2,
+          0,
+          0
+        ]
+      },
+      "agentic": {
+        "ndcg": 0.7181,
+        "mrr": 0.5,
+        "precision": 0.8,
+        "elapsed_ms": 4410.0,
+        "relevances": [
+          0,
+          3,
+          2,
+          3,
+          3
+        ]
+      }
+    }
+  },
+  {
+    "query_id": "q03",
+    "query": "해운대구에서 양식 할인",
+    "modes": {
+      "naive": {
+        "ndcg": 0.6833,
+        "mrr": 0.5,
+        "precision": 0.6,
+        "elapsed_ms": 1320.0,
+        "relevances": [
+          0,
+          2,
+          1,
+          2,
+          0
+        ]
+      },
+      "bm25": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 862.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "hybrid": {
+        "ndcg": 0.5197,
+        "mrr": 0.3333,
+        "precision": 0.4,
+        "elapsed_ms": 1320.0,
+        "relevances": [
+          0,
+          0,
+          2,
+          0,
+          1
+        ]
+      },
+      "rerank": {
+        "ndcg": 0.9871,
+        "mrr": 1.0,
+        "precision": 0.6,
+        "elapsed_ms": 2035.0,
+        "relevances": [
+          2,
+          2,
+          0,
+          1,
+          0
+        ]
+      },
+      "hyde_rerank": {
+        "ndcg": 0.6309,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "elapsed_ms": 3508.0,
+        "relevances": [
+          0,
+          2,
+          0,
+          0,
+          0
+        ]
+      },
+      "multi_rerank": {
+        "ndcg": 0.7009,
+        "mrr": 0.5,
+        "precision": 0.6,
+        "elapsed_ms": 3549.0,
+        "relevances": [
+          0,
+          2,
+          2,
+          0,
+          1
+        ]
+      },
+      "agentic": {
+        "ndcg": 0.9871,
+        "mrr": 1.0,
+        "precision": 0.6,
+        "elapsed_ms": 3395.0,
+        "relevances": [
+          2,
+          2,
+          0,
+          1,
+          0
+        ]
+      }
+    }
+  },
+  {
+    "query_id": "q04",
+    "query": "미용실 저렴한 곳",
+    "modes": {
+      "naive": {
+        "ndcg": 0.6183,
+        "mrr": 0.3333,
+        "precision": 0.6,
+        "elapsed_ms": 1394.0,
+        "relevances": [
+          0,
+          0,
+          2,
+          2,
+          2
+        ]
+      },
+      "bm25": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 859.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "hybrid": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 1435.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.8,
+        "elapsed_ms": 2057.0,
+        "relevances": [
+          2,
+          2,
+          2,
+          2,
+          0
+        ]
+      },
+      "hyde_rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "elapsed_ms": 3253.0,
+        "relevances": [
+          2,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "multi_rerank": {
+        "ndcg": 0.9829,
+        "mrr": 1.0,
+        "precision": 0.8,
+        "elapsed_ms": 3430.0,
+        "relevances": [
+          2,
+          2,
+          2,
+          0,
+          2
+        ]
+      },
+      "agentic": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.8,
+        "elapsed_ms": 11010.0,
+        "relevances": [
+          2,
+          2,
+          2,
+          2,
+          0
+        ]
+      }
+    }
+  },
+  {
+    "query_id": "q05",
+    "query": "아이스크림 가게",
+    "modes": {
+      "naive": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 1430.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "bm25": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 886.0,
+        "relevances": []
+      },
+      "hybrid": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 1460.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rerank": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 2371.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "hyde_rerank": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 3378.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "multi_rerank": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 4924.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "agentic": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 21485.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  {
+    "query_id": "q06",
+    "query": "이번 주말에 아이들이랑 갈 만한 데",
+    "modes": {
+      "naive": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 1347.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "bm25": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 880.0,
+        "relevances": []
+      },
+      "hybrid": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 1783.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rerank": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 1977.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "hyde_rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "elapsed_ms": 4280.0,
+        "relevances": [
+          3,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "multi_rerank": {
+        "ndcg": 0.6309,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "elapsed_ms": 3615.0,
+        "relevances": [
+          0,
+          3,
+          0,
+          0,
+          0
+        ]
+      },
+      "agentic": {
+        "ndcg": 0.6309,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "elapsed_ms": 14008.0,
+        "relevances": [
+          0,
+          3,
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  {
+    "query_id": "q07",
+    "query": "사하구 도서관",
+    "modes": {
+      "naive": {
+        "error": "Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `busan_libraries` doesn\\'t exist!\"},\"time\":0.000014892}'"
+      },
+      "bm25": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.4,
+        "elapsed_ms": 854.0,
+        "relevances": [
+          3,
+          3
+        ]
+      },
+      "hybrid": {
+        "ndcg": 0.9905,
+        "mrr": 1.0,
+        "precision": 0.6,
+        "elapsed_ms": 1329.0,
+        "relevances": [
+          3,
+          3,
+          0,
+          0,
+          1
+        ]
+      },
+      "rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 1877.0,
+        "relevances": [
+          3,
+          3,
+          1,
+          1,
+          1
+        ]
+      },
+      "hyde_rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 3412.0,
+        "relevances": [
+          3,
+          3,
+          1,
+          1,
+          1
+        ]
+      },
+      "multi_rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 2854.0,
+        "relevances": [
+          3,
+          3,
+          1,
+          1,
+          1
+        ]
+      },
+      "agentic": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 3442.0,
+        "relevances": [
+          3,
+          3,
+          1,
+          1,
+          1
+        ]
+      }
+    }
+  },
+  {
+    "query_id": "q08",
+    "query": "해운대구 영어 도서관",
+    "modes": {
+      "naive": {
+        "error": "Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `busan_libraries` doesn\\'t exist!\"},\"time\":0.000014441}'"
+      },
+      "bm25": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 881.0,
+        "relevances": []
+      },
+      "hybrid": {
+        "ndcg": 0.8503,
+        "mrr": 1.0,
+        "precision": 0.4,
+        "elapsed_ms": 1441.0,
+        "relevances": [
+          1,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.6,
+        "elapsed_ms": 2345.0,
+        "relevances": [
+          1,
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      "hyde_rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.6,
+        "elapsed_ms": 3589.0,
+        "relevances": [
+          1,
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      "multi_rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.6,
+        "elapsed_ms": 3475.0,
+        "relevances": [
+          1,
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      "agentic": {
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "elapsed_ms": 9268.0,
+        "relevances": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  {
+    "query_id": "q09",
+    "query": "금정구 카페",
+    "modes": {
+      "naive": {
+        "ndcg": 0.9317,
+        "mrr": 1.0,
+        "precision": 0.8,
+        "elapsed_ms": 1442.0,
+        "relevances": [
+          3,
+          2,
+          3,
+          0,
+          3
+        ]
+      },
+      "bm25": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "elapsed_ms": 870.0,
+        "relevances": [
+          3,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "hybrid": {
+        "ndcg": 0.9839,
+        "mrr": 1.0,
+        "precision": 0.6,
+        "elapsed_ms": 1374.0,
+        "relevances": [
+          3,
+          3,
+          0,
+          2,
+          0
+        ]
+      },
+      "rerank": {
+        "ndcg": 0.9833,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 2356.0,
+        "relevances": [
+          3,
+          3,
+          2,
+          3,
+          1
+        ]
+      },
+      "hyde_rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "elapsed_ms": 3437.0,
+        "relevances": [
+          3,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "multi_rerank": {
+        "ndcg": 0.9829,
+        "mrr": 1.0,
+        "precision": 0.8,
+        "elapsed_ms": 3479.0,
+        "relevances": [
+          3,
+          3,
+          2,
+          3,
+          0
+        ]
+      },
+      "agentic": {
+        "ndcg": 0.9833,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 6508.0,
+        "relevances": [
+          3,
+          3,
+          2,
+          3,
+          1
+        ]
+      }
+    }
+  },
+  {
+    "query_id": "q10",
+    "query": "부산 어린이 도서관",
+    "modes": {
+      "naive": {
+        "error": "Unexpected Response: 404 (Not Found)\nRaw response content:\nb'{\"status\":{\"error\":\"Not found: Collection `busan_libraries` doesn\\'t exist!\"},\"time\":0.000014277}'"
+      },
+      "bm25": {
+        "ndcg": 0.9517,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 867.0,
+        "relevances": [
+          3,
+          2,
+          3,
+          3,
+          1
+        ]
+      },
+      "hybrid": {
+        "ndcg": 0.9108,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 1297.0,
+        "relevances": [
+          3,
+          2,
+          1,
+          3,
+          3
+        ]
+      },
+      "rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 1935.0,
+        "relevances": [
+          3,
+          3,
+          3,
+          2,
+          2
+        ]
+      },
+      "hyde_rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 3722.0,
+        "relevances": [
+          3,
+          3,
+          3,
+          2,
+          2
+        ]
+      },
+      "multi_rerank": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 2825.0,
+        "relevances": [
+          3,
+          3,
+          3,
+          2,
+          2
+        ]
+      },
+      "agentic": {
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 1.0,
+        "elapsed_ms": 3769.0,
+        "relevances": [
+          3,
+          3,
+          3,
+          2,
+          2
+        ]
+      }
+    }
+  }
+]

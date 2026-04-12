@@ -1,0 +1,123 @@
+[
+  {
+    "query_id": "q01",
+    "query": "동래구 목욕탕",
+    "source": "family_card",
+    "relevant_docs": [
+      { "doc_text_prefix": "[동래구 / 세탁, 목욕업] 동래해수탕", "grade": 3 },
+      { "doc_text_prefix": "[동래구 / 세탁, 목욕업] 만수탕", "grade": 3 },
+      { "doc_text_prefix": "[동래구 / 세탁, 목욕업] 반도온천", "grade": 3 },
+      { "doc_text_prefix": "[부산진구 / 세탁, 목욕업] 대성목욕탕", "grade": 2 },
+      { "doc_text_prefix": "[북구 / 세탁, 목욕업] 태양탕", "grade": 2 },
+      { "doc_text_prefix": "[동구 / 기타] 수정탕제원", "grade": 2 },
+      { "doc_text_prefix": "[동래구 / 요식업등] 논두렁추어탕", "grade": 1 }
+    ]
+  },
+  {
+    "query_id": "q02",
+    "query": "부산진구 한식 맛집",
+    "source": "family_card",
+    "relevant_docs": [
+      { "doc_text_prefix": "[부산진구 / 요식업등] 금돼지식당", "grade": 3 },
+      { "doc_text_prefix": "[부산진구 / 요식업등] 금천곰탕", "grade": 3 },
+      { "doc_text_prefix": "[부산진구 / 요식업등] 부산갈매기", "grade": 3 },
+      { "doc_text_prefix": "[부산진구 / 요식업등] 장터돼지국밥", "grade": 3 },
+      { "doc_text_prefix": "[부산진구 / 요식업등] 창연횟집", "grade": 2 },
+      { "doc_text_prefix": "[부산진구 / 요식업등] 서울식당", "grade": 2 },
+      { "doc_text_prefix": "[부산진구 / 요식업등] 신보성", "grade": 2 },
+      { "doc_text_prefix": "[부산진구 / 요식업등] 북경", "grade": 1 }
+    ]
+  },
+  {
+    "query_id": "q03",
+    "query": "해운대구에서 양식 할인",
+    "source": "family_card",
+    "relevant_docs": [
+      { "doc_text_prefix": "[해운대구 / 요식업등] 면옥향천", "grade": 2 },
+      { "doc_text_prefix": "[해운대구 / 요식업등] 수백한상", "grade": 2 },
+      { "doc_text_prefix": "[해운대구 / 요식업등] 미친과일", "grade": 1 }
+    ]
+  },
+  {
+    "query_id": "q04",
+    "query": "미용실 저렴한 곳",
+    "source": "family_card",
+    "relevant_docs": [
+      { "doc_text_prefix": "[부산진구 / 이미용업] 땡큐미용실", "grade": 2 },
+      { "doc_text_prefix": "[수영구 / 이미용업] e-편한 미용실", "grade": 2 },
+      { "doc_text_prefix": "[북구 / 이미용업] 명성미용실", "grade": 2 },
+      { "doc_text_prefix": "[동구 / 이미용업] 성심미용실", "grade": 2 },
+      { "doc_text_prefix": "[동구 / 이미용업] 은빛미용실", "grade": 2 },
+      { "doc_text_prefix": "[부산진구 / 이미용업] 순미용실", "grade": 2 },
+      { "doc_text_prefix": "[동구 / 이미용업] 목화미용실", "grade": 2 },
+      { "doc_text_prefix": "[동래구 / 이미용업] 미숙이네집미용실", "grade": 2 },
+      { "doc_text_prefix": "[동구 / 이미용업] 나나미용실", "grade": 2 }
+    ]
+  },
+  {
+    "query_id": "q05",
+    "query": "아이스크림 가게",
+    "source": "family_card",
+    "relevant_docs": []
+  },
+  {
+    "query_id": "q06",
+    "query": "이번 주말에 아이들이랑 갈 만한 데",
+    "source": "family_card",
+    "relevant_docs": [
+      { "doc_text_prefix": "[해운대구 / 기타] 부산아쿠아리움", "grade": 3 }
+    ]
+  },
+  {
+    "query_id": "q07",
+    "query": "사하구 도서관",
+    "source": "library",
+    "relevant_docs": [
+      { "doc_text_prefix": "[사하구 / 작은도서관] 푸른누리작은도서관", "grade": 3 },
+      { "doc_text_prefix": "[사하구 / 작은도서관] 감천횃불작은도서관", "grade": 3 },
+      { "doc_text_prefix": "[사상구 / 작은도서관] 주례2동 작은도서관", "grade": 1 },
+      { "doc_text_prefix": "[사상구 / 작은도서관] 주례쌈지 작은도서관", "grade": 1 },
+      { "doc_text_prefix": "[연제구 / 공공도서관] 연제도서관", "grade": 1 }
+    ]
+  },
+  {
+    "query_id": "q08",
+    "query": "해운대구 영어 도서관",
+    "source": "library",
+    "relevant_docs": [
+      { "doc_text_prefix": "[부산진구 / 공공도서관] 부산진구기적의도서관", "grade": 1 },
+      { "doc_text_prefix": "[부산진구 / 공공도서관] 부산진구어린이청소년도서관", "grade": 1 },
+      { "doc_text_prefix": "[동구 / 공공도서관] 동구도서관", "grade": 1 }
+    ]
+  },
+  {
+    "query_id": "q09",
+    "query": "금정구 카페",
+    "source": "family_card",
+    "relevant_docs": [
+      { "doc_text_prefix": "[금정구 / 요식업등] 카페051 서동점", "grade": 3 },
+      { "doc_text_prefix": "[금정구 / 요식업등] 카페 마일로 금사점", "grade": 3 },
+      { "doc_text_prefix": "[금정구 / 기타] 카페자두", "grade": 3 },
+      { "doc_text_prefix": "[금정구 / 학원] 셀독24스터디카페", "grade": 2 },
+      { "doc_text_prefix": "[금정구 / 요식업등] 미로", "grade": 1 },
+      { "doc_text_prefix": "[금정구 / 요식업등] 안채", "grade": 1 }
+    ]
+  },
+  {
+    "query_id": "q10",
+    "query": "부산 어린이 도서관",
+    "source": "library",
+    "relevant_docs": [
+      { "doc_text_prefix": "[부산진구 / 공공도서관] 부산진구어린이청소년도서관", "grade": 3 },
+      { "doc_text_prefix": "[연제구 / 작은도서관] 토곡어린이작은도서관", "grade": 3 },
+      { "doc_text_prefix": "[기장군 / 공공도서관] 정관어린이도서관", "grade": 3 },
+      { "doc_text_prefix": "[부산진구 / 공공도서관] 부산진구기적의도서관", "grade": 2 },
+      { "doc_text_prefix": "[사하구 / 작은도서관] 푸른누리작은도서관", "grade": 2 },
+      { "doc_text_prefix": "[동구 / 공공도서관] 동구도서관", "grade": 1 },
+      { "doc_text_prefix": "[사하구 / 작은도서관] 감천횃불작은도서관", "grade": 1 },
+      { "doc_text_prefix": "[사상구 / 작은도서관] 주례2동 작은도서관", "grade": 1 },
+      { "doc_text_prefix": "[사상구 / 작은도서관] 주례쌈지 작은도서관", "grade": 1 },
+      { "doc_text_prefix": "[연제구 / 공공도서관] 연제도서관", "grade": 1 }
+    ]
+  }
+]
